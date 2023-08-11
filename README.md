@@ -9,8 +9,8 @@
 * 提供了技术栈（[Vue3](https://v3.cn.vuejs.org) [Element Plus](https://element-plus.org/zh-CN) [Vite](https://cn.vitejs.dev)）版本[RuoYi-Cloud-Vue3](https://github.com/yangzongzhuan/RuoYi-Cloud-Vue3)，保持同步更新。
 * 如需不分离应用，请移步 [RuoYi](https://gitee.com/y_project/RuoYi)，如需分离应用，请移步 [RuoYi-Vue](https://gitee.com/y_project/RuoYi-Vue)
 
-#### 友情链接 [若依/RuoYi-Cloud](https://gitee.com/zhangmrit/ruoyi-cloud) Ant Design版本。
-
+#### 
+#### 本项目FORK自 [若依|RuoYi-Cloud](https://gitee.com/y_project/RuoYi-Cloud.git)
 ## 系统模块
 
 ~~~
@@ -41,7 +41,7 @@ com.ruoyi
 
 ## 架构图
 
-<img src="https://oscimg.oschina.net/oscnet/up-82e9722ecb846786405a904bafcf19f73f3.png"/>
+![](/img/up-82e9722ecb846786405a904bafcf19f73f3.png)
 
 ## 内置功能
 
