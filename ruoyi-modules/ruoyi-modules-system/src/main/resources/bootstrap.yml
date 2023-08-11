@@ -9,13 +9,12 @@ spring:
     name: ruoyi-system
   profiles:
     # 环境配置
-    active: prod
+    active: dev
   cloud:
     nacos:
       discovery:
         # 服务注册地址
         server-addr: 127.0.0.1:8848
-        namespace: b8e4722b-69a6-442c-8bfd-e59427dc9c9a
       config:
         # 配置中心地址
         server-addr: 127.0.0.1:8848
@@ -24,4 +23,3 @@ spring:
         # 共享配置
         shared-configs:
           - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
-        namespace: b8e4722b-69a6-442c-8bfd-e59427dc9c9a
