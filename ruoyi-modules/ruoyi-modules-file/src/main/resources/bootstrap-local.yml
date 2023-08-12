@@ -1,0 +1,29 @@
+#mysql配置
+spring:
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql://127.0.0.1:3306/ry-cloud?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
+    driver-class-name: com.mysql.jdbc.Driver
+  # 配置文件上传大小限制
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+#minio的配置
+minio:
+  endpoint: http://127.0.0.1:9090
+  accessKey: admin
+  secretKey: admin123
+  bucketName: test
+  #mybatis-plus配置
+mybatis-plus:
+  mapper-locations: classpath:mybatis/**/*.xml
+  global-config:
+    db-config:
+      id-type: none
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+

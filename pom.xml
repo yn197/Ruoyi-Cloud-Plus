@@ -205,6 +205,12 @@
                 <version>${ruoyi.version}</version>
             </dependency>
 
+            <!-- 核心接口类包 ruoyi-common-framework -->
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-common-framework</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
