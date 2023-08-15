@@ -16,8 +16,16 @@ public interface SysUploadFileService extends IService<SysUploadFile> {
 
     /**
      * 保存文件信息
-     *
-     * @param sysUploadFileDto the sys upload file dto
+     * @param sysUploadFile
      */
-    void saveSysUploadFile(SysUploadFileDto sysUploadFileDto);
+    void saveSysUploadFile(SysUploadFile sysUploadFile);
+
+
+    /**
+     * 删除单个文件
+     * Delete sys upload file.
+     *
+     * @param fileId the file id
+     */
+    void deleteSysUploadFile(String fileId);
 }

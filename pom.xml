@@ -263,29 +263,12 @@
         </pluginManagement>
     </build>
 
-    <repositories>
+    <!--远程仓库地址-->
+    <distributionManagement>
         <repository>
-            <id>public</id>
-            <name>aliyun nexus</name>
-            <url>https://maven.aliyun.com/repository/public</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
+            <id>aliyun</id>
+            <name>aliyun</name>
+            <url>http://localhost:8081/repository/maven-releases/</url>
         </repository>
-    </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>public</id>
-            <name>aliyun nexus</name>
-            <url>https://maven.aliyun.com/repository/public</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
-
+    </distributionManagement>
 </project>

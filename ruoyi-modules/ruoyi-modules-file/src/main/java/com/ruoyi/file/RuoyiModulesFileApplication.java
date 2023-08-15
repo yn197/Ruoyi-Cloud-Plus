@@ -13,7 +13,7 @@ import com.ruoyi.common.swagger.annotation.EnableCustomSwagger2;
  */
 @EnableCustomSwagger2
 @SpringBootApplication
-@MapperScan(basePackages = "com.ruoyi.file.mapper")
+@MapperScan(basePackages = "com.ruoyi.**.mapper")
 public class RuoyiModulesFileApplication
 {
     public static void main(String[] args)

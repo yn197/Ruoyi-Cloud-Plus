@@ -235,10 +235,10 @@ public class MinioUtils {
     public void uploadFile(String bucketName, MultipartFile file, String objectName, String contentType) {
         InputStream inputStream = file.getInputStream();
         //如果不存在桶
-        if (!bucketExists(bucketName)){
+        if (!bucketExists(bucketName)) {
             createBucket(bucketName);
         }
-        ObjectWriteResponse objectWriteResponse = minioClient.putObject(
+        minioClient.putObject(
                 PutObjectArgs.builder()
                         .bucket(bucketName)
                         .object(objectName)
@@ -250,6 +250,7 @@ public class MinioUtils {
 
     /**
      * 图片上传
+     *
      * @param bucketName
      * @param imageBase64
      * @param imageName
@@ -373,10 +374,9 @@ public class MinioUtils {
      * @param objectName 文件名称
      */
     @SneakyThrows(Exception.class)
-    public void removeFile(String bucketName, String objectName) {
+    public void removeFile(String objectName) {
         minioClient.removeObject(
                 RemoveObjectArgs.builder()
-                        .bucket(bucketName)
                         .object(objectName)
                         .build());
     }
@@ -388,12 +388,12 @@ public class MinioUtils {
      * @param keys       需要删除的文件列表
      * @return
      */
-    public void removeFiles(String bucketName, List<String> keys) {
+    public void removeFiles(List<String> keys) {
         List<DeleteObject> objects = new LinkedList<>();
         keys.forEach(s -> {
             objects.add(new DeleteObject(s));
             try {
-                removeFile(bucketName, s);
+                removeFile(s);
             } catch (Exception e) {
                 log.error("[Minio工具类]>>>> 批量删除文件，异常：", e);
             }

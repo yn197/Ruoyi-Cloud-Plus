@@ -1,14 +1,12 @@
 package com.ruoyi.file.controller;
 
 import com.ruoyi.common.core.domain.R;
-import com.ruoyi.common.core.dto.SysUploadFileDto;
+import com.ruoyi.common.core.utils.uuid.IdUtils;
 import com.ruoyi.file.config.MinioConfiguration;
 import com.ruoyi.file.service.SysUploadFileService;
 import com.ruoyi.file.utils.MinioUtils;
-import com.ruoyi.system.api.domain.SysFile;
 import com.ruoyi.system.api.domain.SysUploadFile;
-import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.StringUtils;
+import io.swagger.annotations.*;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
+import java.util.Objects;
 
 /**
  * 文件请求处理
@@ -26,13 +25,13 @@ import java.io.InputStream;
  */
 @RestController
 @RequestMapping("oss")
+@Api(value="文件服务Controller",tags={"文件服务接口"})
 public class SysFileController {
     private static final Logger log = LoggerFactory.getLogger(SysFileController.class);
     @Resource
     private SysUploadFileService sysUploadFileService;
     @Resource
     private MinioUtils minioUtils;
-
     @Resource
     private MinioConfiguration minioConfiguration;
 
@@ -41,24 +40,33 @@ public class SysFileController {
      *
      * @param file
      */
+    @ApiImplicitParams({
+            //参数效验
+            @ApiImplicitParam(name = "file", value = "文件", required = true, paramType = "form"),
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "请求成功"),
+            @ApiResponse(code = 400, message = "请求参数没填好"),
+            @ApiResponse(code = 404, message = "请求路径没有或页面跳转路径不对"),
+            @ApiResponse(code = 500, message = "访问异常")
+    })
+    @ApiOperation(value = "文件上传", httpMethod = "POST", notes = "文件上传")
     @PostMapping("/upload")
-    public R<SysFile> upload(@RequestParam("file") MultipartFile file, @RequestParam(required = false) String bucketName) {
+    public R<String> upload(@RequestParam("file") MultipartFile file,
+                            @RequestParam(required = false) String bucketName) {
 
         try {
-            //文件名
-            String fileName = file.getOriginalFilename();
-            String newFileName = System.currentTimeMillis() + "." + StringUtils.substringAfterLast(fileName, ".");
+            String uuid = IdUtils.simpleUUID();
             //类型
             String contentType = file.getContentType();
-            minioUtils.uploadFile(ObjectUtils.isEmpty(bucketName)?minioConfiguration.getBucketName():bucketName, file, newFileName, contentType);
-
+            minioUtils.uploadFile(Objects.isNull(bucketName) ? minioConfiguration.getBucketName() : bucketName, file, uuid, contentType);
             //保存文件信息
-            SysUploadFileDto sysUploadFileDto = new SysUploadFileDto();
-            sysUploadFileDto.setFileName(fileName);
-            sysUploadFileDto.setFileId(newFileName);
-            sysUploadFileDto.setBucketName(ObjectUtils.isEmpty(bucketName)?minioConfiguration.getBucketName():bucketName);
-            sysUploadFileService.saveSysUploadFile(sysUploadFileDto);
-            return R.ok();
+            SysUploadFile sysUploadFile = new SysUploadFile();
+            sysUploadFile.setFileName(file.getOriginalFilename());
+            sysUploadFile.setFileId(uuid);
+            sysUploadFile.setBucketName(Objects.isNull(bucketName) ? minioConfiguration.getBucketName() : bucketName);
+            sysUploadFileService.saveSysUploadFile(sysUploadFile);
+            return R.ok(uuid);
         } catch (Exception e) {
             log.error("上传失败");
             return R.fail();
@@ -66,13 +74,24 @@ public class SysFileController {
     }
 
     /**
-     * 删除
+     * 删除单个的文件
      *
-     * @param fileName
+     * @param fileId
      */
-    @DeleteMapping("/")
-    public void delete(@RequestParam("fileName") String fileName) {
-        minioUtils.removeFile(minioConfiguration.getBucketName(), fileName);
+    @ApiImplicitParams({
+            //参数效验
+            @ApiImplicitParam(name = "fileId", value = "文件id", required = true),
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "请求成功"),
+            @ApiResponse(code = 400, message = "请求参数没填好"),
+            @ApiResponse(code = 404, message = "请求路径没有或页面跳转路径不对"),
+            @ApiResponse(code = 500, message = "访问异常")
+    })
+    @ApiOperation(value = "文件通过id删除", httpMethod = "GET", notes = "文件通过id删除")
+    @GetMapping("/deleteSysUploadFile/{fileId}")
+    public void deleteSysUploadFile(@PathVariable("fileId") String fileId) {
+        sysUploadFileService.deleteSysUploadFile(fileId);
     }
 
     /**
