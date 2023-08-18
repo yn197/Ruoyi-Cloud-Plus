@@ -42,6 +42,10 @@
         <poi.version>4.1.2</poi.version>
         <transmittable-thread-local.version>2.14.3</transmittable-thread-local.version>
         <lombok.version>1.18.26</lombok.version>
+        <mybatis-plus.version>3.4.2</mybatis-plus.version>
+        <pagehelper.version>5.3.1</pagehelper.version>
+        <mysql.version>8.0.33</mysql.version>
+
     </properties>
 
     <!-- 依赖声明 -->
@@ -216,19 +220,19 @@
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
-                <version>3.4.2</version>
+                <version>${mybatis-plus.version}</version>
             </dependency>
             <!-- pagehelper 分页插件 -->
             <dependency>
                 <groupId>com.github.pagehelper</groupId>
                 <artifactId>pagehelper</artifactId>
-                <version>5.3.0</version>
+                <version>${pagehelper.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
-                <version>8.0.33</version>
+                <version>${mysql.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
