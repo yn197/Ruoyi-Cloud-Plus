@@ -9,20 +9,20 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    
-    <artifactId>ruoyi-common-datascope</artifactId>
-	
+
+    <artifactId>ruoyi-common-seata</artifactId>
+
     <description>
-        ruoyi-common-datascope权限范围
+        ruoyi-common-seata分布式事务
     </description>
 
     <dependencies>
-		
-        <!-- RuoYi Common Security -->
+
+        <!-- SpringBoot Seata -->
         <dependency>
-            <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-common-security</artifactId>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-seata</artifactId>
         </dependency>
-        
+
     </dependencies>
 </project>

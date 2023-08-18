@@ -4,8 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>com.ruoyi</groupId>
-        <artifactId>ruoyi-modules</artifactId>
+        <artifactId>ruoyi</artifactId>
         <version>1.0-RELEASE</version>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -41,6 +42,13 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 		
+        <!-- Swagger UI -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${swagger.fox.version}</version>
+        </dependency>
+		
         <!-- Quartz -->
         <dependency>
             <groupId>org.quartz-scheduler</groupId>
@@ -55,8 +63,8 @@
         
         <!-- Mysql Connector -->
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
         </dependency>
         
         <!-- RuoYi Common Log -->
@@ -65,11 +73,12 @@
             <artifactId>ruoyi-common-log</artifactId>
         </dependency>
         
-        <!-- Swagger 依赖配置 -->
+        <!-- RuoYi Common Swagger -->
         <dependency>
-            <groupId>com.github.xiaoymin</groupId>
-            <artifactId>knife4j-spring-boot-starter</artifactId>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-common-swagger</artifactId>
         </dependency>
+        
     </dependencies>
 
     <build>
