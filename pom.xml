@@ -12,14 +12,14 @@
     </parent>
     <groupId>com.ruoyi</groupId>
     <artifactId>ruoyi</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0-RELEASE</version>
 
     <name>ruoyi</name>
     <url>http://www.ruoyi.vip</url>
     <description>若依微服务系统</description>
 
     <properties>
-        <ruoyi.version>1.0-SNAPSHOT</ruoyi.version>
+        <ruoyi.version>1.0-RELEASE</ruoyi.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
