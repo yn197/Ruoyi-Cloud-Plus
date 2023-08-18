@@ -4,15 +4,15 @@
     <parent>
         <groupId>com.ruoyi</groupId>
         <artifactId>ruoyi</artifactId>
-        <version>3.6.2</version>
+        <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <modules>
-        <module>ruoyi-modules-system</module>
-        <module>ruoyi-modules-gen</module>
-        <module>ruoyi-modules-job</module>
-        <module>ruoyi-modules-file</module>
+        <module>ruoyi-system</module>
+        <module>ruoyi-gen</module>
+        <module>ruoyi-job</module>
+        <module>ruoyi-file</module>
     </modules>
 
     <artifactId>ruoyi-modules</artifactId>
