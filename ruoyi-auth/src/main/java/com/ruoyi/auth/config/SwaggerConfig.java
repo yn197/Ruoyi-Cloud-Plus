@@ -1,4 +1,4 @@
-package com.ruoyi.file.config;
+package com.ruoyi.auth.config;
 
 import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
 import org.springframework.context.annotation.Bean;
@@ -36,7 +36,7 @@ public class SwaggerConfig {
                 .groupName("1.0-SNAPSHOT")
                 .select()
                 //这里指定扫描包路径
-                .apis(RequestHandlerSelectors.basePackage("com.ruoyi.file.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.ruoyi.auth.controller"))
                 .paths(PathSelectors.any())
                 .build();
         return docket;
@@ -44,12 +44,12 @@ public class SwaggerConfig {
 
     private ApiInfo buildApiInfo() {
         Contact contact = new Contact(
-                "若依文件服务api文档",
-                "http://localhost:8003/doc.html",
+                "若依认证授权中心服务api文档",
+                "http://localhost:9200/doc.html",
                 "nisang9527@outlook.com");
         return new ApiInfoBuilder()
                 .title("ruoyi-file")
-                .description("若依文件服务api文档")
+                .description("若依认证授权中心服务api文档")
                 .contact(contact)
                 .version("1.0-SNAPSHOT").build();
     }

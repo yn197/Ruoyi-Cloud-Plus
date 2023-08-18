@@ -1,52 +1,30 @@
 package com.ruoyi.gateway.handler;
 
-import java.util.Optional;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.cloud.gateway.filter.GatewayFilter;
+import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
+import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.stereotype.Component;
+import org.springframework.web.server.ServerWebExchange;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.Mono;
-import springfox.documentation.swagger.web.SecurityConfiguration;
-import springfox.documentation.swagger.web.SecurityConfigurationBuilder;
-import springfox.documentation.swagger.web.SwaggerResourcesProvider;
-import springfox.documentation.swagger.web.UiConfiguration;
-import springfox.documentation.swagger.web.UiConfigurationBuilder;
+@Component
+public class SwaggerHandler extends AbstractGatewayFilterFactory {
+    private static final String HEADER_NAME = "X-Forwarded-Prefix";
 
-@RestController
-@RequestMapping("/swagger-resources")
-public class SwaggerHandler {
-    @Autowired(required = false)
-    private SecurityConfiguration securityConfiguration;
+    private static final String URI = "/v2/api-docs";
 
-    @Autowired(required = false)
-    private UiConfiguration uiConfiguration;
-
-    private final SwaggerResourcesProvider swaggerResources;
-
-    @Autowired
-    public SwaggerHandler(SwaggerResourcesProvider swaggerResources) {
-        this.swaggerResources = swaggerResources;
-    }
-
-    @GetMapping("/configuration/security")
-    public Mono<ResponseEntity<SecurityConfiguration>> securityConfiguration() {
-        return Mono.just(new ResponseEntity<>(
-                Optional.ofNullable(securityConfiguration).orElse(SecurityConfigurationBuilder.builder().build()),
-                HttpStatus.OK));
-    }
-
-    @GetMapping("/configuration/ui")
-    public Mono<ResponseEntity<UiConfiguration>> uiConfiguration() {
-        return Mono.just(new ResponseEntity<>(
-                Optional.ofNullable(uiConfiguration).orElse(UiConfigurationBuilder.builder().build()), HttpStatus.OK));
-    }
-
-    @SuppressWarnings("rawtypes")
-    @GetMapping("")
-    public Mono<ResponseEntity> swaggerResources() {
-        return Mono.just((new ResponseEntity<>(swaggerResources.get(), HttpStatus.OK)));
+    @Override
+    public GatewayFilter apply(Object config) {
+        return (exchange, chain) -> {
+            ServerHttpRequest request = exchange.getRequest();
+            String path = request.getURI().getPath();
+            if (!StringUtils.endsWithIgnoreCase(path,URI )) {
+                return chain.filter(exchange);
+            }
+            String basePath = path.substring(0, path.lastIndexOf(URI));
+            ServerHttpRequest newRequest = request.mutate().header(HEADER_NAME, basePath).build();
+            ServerWebExchange newExchange = exchange.mutate().request(newRequest).build();
+            return chain.filter(newExchange);
+        };
     }
 }
