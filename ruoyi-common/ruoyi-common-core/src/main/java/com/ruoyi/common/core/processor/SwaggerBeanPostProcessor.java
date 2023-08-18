@@ -1,11 +1,13 @@
-package com.ruoyi.common.swagger.config;
+package com.ruoyi.common.core.processor;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
 import springfox.documentation.spring.web.plugins.WebFluxRequestHandlerProvider;
 import springfox.documentation.spring.web.plugins.WebMvcRequestHandlerProvider;
+
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,6 +17,7 @@ import java.util.stream.Collectors;
  *
  * @author ruoyi
  */
+@Configuration
 public class SwaggerBeanPostProcessor implements BeanPostProcessor
 {
     @Override

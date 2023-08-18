@@ -7,7 +7,7 @@ import com.ruoyi.file.service.SysUploadFileService;
 import com.ruoyi.file.utils.MinioUtils;
 import com.ruoyi.file.domain.SysUploadFile;
 import io.swagger.annotations.*;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
