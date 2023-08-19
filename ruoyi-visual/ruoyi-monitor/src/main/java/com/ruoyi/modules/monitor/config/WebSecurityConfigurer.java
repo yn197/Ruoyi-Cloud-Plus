@@ -1,19 +1,18 @@
 package com.ruoyi.modules.monitor.config;
 
 import de.codecentric.boot.admin.server.config.AdminServerProperties;
-import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
 /**
  * 监控权限配置
- * 
+ *
  * @author ruoyi
  */
-@EnableWebSecurity
-public class WebSecurityConfigurer
+@Configuration
+public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter
 {
     private final String adminContextPath;
 
@@ -22,14 +21,14 @@ public class WebSecurityConfigurer
         this.adminContextPath = adminServerProperties.getContextPath();
     }
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception
+    @Override
+    protected void configure(HttpSecurity http) throws Exception
     {
         SavedRequestAwareAuthenticationSuccessHandler successHandler = new SavedRequestAwareAuthenticationSuccessHandler();
         successHandler.setTargetUrlParameter("redirectTo");
         successHandler.setDefaultTargetUrl(adminContextPath + "/");
 
-        return httpSecurity
+        http
                 .headers().frameOptions().disable()
                 .and().authorizeRequests()
                 .antMatchers(adminContextPath + "/assets/**"
@@ -45,7 +44,6 @@ public class WebSecurityConfigurer
                 .and()
                 .httpBasic().and()
                 .csrf()
-                .disable()
-                .build();
+                .disable();
     }
 }

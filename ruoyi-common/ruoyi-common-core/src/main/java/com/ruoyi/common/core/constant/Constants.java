@@ -132,4 +132,8 @@ public class Constants
      */
     public static final String[] JOB_ERROR_STR = { "java.net.URL", "javax.naming.InitialContext", "org.yaml.snakeyaml",
             "org.springframework", "org.apache", "com.ruoyi.common.core.utils.file" };
+    /**
+     * 令牌有效期（分钟）
+     */
+    public final static long TOKEN_EXPIRE = 720;
 }

@@ -1,9 +1,10 @@
 package com.ruoyi.file;
 
-import com.ruoyi.common.core.processor.SwaggerBeanPostProcessor;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+
 /**
  * 文件服务
  *
@@ -11,8 +12,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 @MapperScan(basePackages = "com.ruoyi.**.**.mapper")
-
-public class RuoYiFileApplication extends SwaggerBeanPostProcessor {
+@EnableDiscoveryClient
+public class RuoYiFileApplication {
     public static void main(String[] args) {
         SpringApplication.run(RuoYiFileApplication.class, args);
         System.out.println("(♥◠‿◠)ﾉﾞ  文件服务模块启动成功   ლ(´ڡ`ლ)ﾞ  \n" +
