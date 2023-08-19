@@ -7,7 +7,6 @@
         <version>1.0-RELEASE</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
     <modules>
         <module>ruoyi-common-log</module>
         <module>ruoyi-common-core</module>
