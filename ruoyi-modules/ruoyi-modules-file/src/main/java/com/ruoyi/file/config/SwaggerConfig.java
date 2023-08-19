@@ -21,8 +21,6 @@ import java.util.HashSet;
  */
 @Configuration
 @EnableSwagger2
-@EnableKnife4j
-@Import(BeanValidatorPluginsConfiguration.class)//导入其他的配置类 让配置生效
 public class SwaggerConfig {
     @Bean
     public Docket buildDocket() {
@@ -33,7 +31,7 @@ public class SwaggerConfig {
                 //设置返回数据类型
                 .produces(strings)
                 //分组名称
-                .groupName("1.0-SNAPSHOT")
+                .groupName("1.0-RELEASE")
                 .select()
                 //这里指定扫描包路径
                 .apis(RequestHandlerSelectors.basePackage("com.ruoyi.file.controller"))
@@ -51,6 +49,6 @@ public class SwaggerConfig {
                 .title("ruoyi-file")
                 .description("若依文件服务api文档")
                 .contact(contact)
-                .version("1.0-SNAPSHOT").build();
+                .version("1.0-RELEASE").build();
     }
 }

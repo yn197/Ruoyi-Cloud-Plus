@@ -1,10 +1,7 @@
 package com.ruoyi.job.config;
 
-import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -21,8 +18,6 @@ import java.util.HashSet;
  */
 @Configuration
 @EnableSwagger2
-@EnableKnife4j
-@Import(BeanValidatorPluginsConfiguration.class)//导入其他的配置类 让配置生效
 public class SwaggerConfig {
     @Bean
     public Docket buildDocket() {

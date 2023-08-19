@@ -8,7 +8,7 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 
 /**
  * 监控权限配置
- *
+ * 
  * @author ruoyi
  */
 @Configuration
@@ -29,21 +29,21 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter
         successHandler.setDefaultTargetUrl(adminContextPath + "/");
 
         http
-                .headers().frameOptions().disable()
-                .and().authorizeRequests()
-                .antMatchers(adminContextPath + "/assets/**"
-                        , adminContextPath + "/login"
-                        , adminContextPath + "/actuator/**"
-                        , adminContextPath + "/instances/**"
-                ).permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .formLogin().loginPage(adminContextPath + "/login")
-                .successHandler(successHandler).and()
-                .logout().logoutUrl(adminContextPath + "/logout")
-                .and()
-                .httpBasic().and()
-                .csrf()
-                .disable();
+            .headers().frameOptions().disable()
+            .and().authorizeRequests()
+            .antMatchers(adminContextPath + "/assets/**"
+                , adminContextPath + "/login"
+                , adminContextPath + "/actuator/**"
+                , adminContextPath + "/instances/**"
+            ).permitAll()
+            .anyRequest().authenticated()
+            .and()
+            .formLogin().loginPage(adminContextPath + "/login")
+            .successHandler(successHandler).and()
+            .logout().logoutUrl(adminContextPath + "/logout")
+            .and()
+            .httpBasic().and()
+            .csrf()
+            .disable();
     }
 }
