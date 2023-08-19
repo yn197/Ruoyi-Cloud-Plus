@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import org.springframework.util.PatternMatchUtils;
-import com.ruoyi.common.core.context.SecurityContextHolder;
 import com.ruoyi.common.core.exception.auth.NotLoginException;
 import com.ruoyi.common.core.exception.auth.NotPermissionException;
 import com.ruoyi.common.core.exception.auth.NotRoleException;
@@ -94,7 +93,7 @@ public class AuthLogic
     }
 
     /**
-     * 验证当前用户有效期, 如果相差不足120分钟，自动刷新缓存
+     * 验证当前用户有效期, 如果相差不足360分钟，自动刷新缓存
      * 
      * @param loginUser 当前用户信息
      */
@@ -135,7 +134,6 @@ public class AuthLogic
      */
     public void checkPermi(RequiresPermissions requiresPermissions)
     {
-        SecurityContextHolder.setPermission(StringUtils.join(requiresPermissions.value(), ","));
         if (requiresPermissions.logical() == Logical.AND)
         {
             checkPermiAnd(requiresPermissions.value());

@@ -4,17 +4,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import javax.servlet.http.HttpServletRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.ruoyi.common.core.constant.CacheConstants;
 import com.ruoyi.common.core.constant.SecurityConstants;
+import com.ruoyi.common.core.utils.uuid.IdUtils;
 import com.ruoyi.common.core.utils.JwtUtils;
 import com.ruoyi.common.core.utils.ServletUtils;
 import com.ruoyi.common.core.utils.StringUtils;
 import com.ruoyi.common.core.utils.ip.IpUtils;
-import com.ruoyi.common.core.utils.uuid.IdUtils;
 import com.ruoyi.common.redis.service.RedisService;
 import com.ruoyi.common.security.utils.SecurityUtils;
 import com.ruoyi.system.api.model.LoginUser;
@@ -27,8 +25,6 @@ import com.ruoyi.system.api.model.LoginUser;
 @Component
 public class TokenService
 {
-    private static final Logger log = LoggerFactory.getLogger(TokenService.class);
-
     @Autowired
     private RedisService redisService;
 
@@ -53,7 +49,7 @@ public class TokenService
         loginUser.setToken(token);
         loginUser.setUserid(userId);
         loginUser.setUsername(userName);
-        loginUser.setIpaddr(IpUtils.getIpAddr());
+        loginUser.setIpaddr(IpUtils.getIpAddr(ServletUtils.getRequest()));
         refreshToken(loginUser);
 
         // Jwt存储信息
@@ -110,7 +106,6 @@ public class TokenService
         }
         catch (Exception e)
         {
-            log.error("获取用户信息异常'{}'", e.getMessage());
         }
         return user;
     }

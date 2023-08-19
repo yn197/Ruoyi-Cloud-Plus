@@ -10,6 +10,8 @@ spring:
   profiles:
     # 环境配置
     active: dev
+  main:
+    allow-bean-definition-overriding: true
   cloud:
     nacos:
       discovery:
@@ -37,4 +39,4 @@ spring:
             dataId: sentinel-ruoyi-gateway
             groupId: DEFAULT_GROUP
             data-type: json
-            rule-type: gw-flow
+            rule-type: flow
