@@ -1,5 +1,6 @@
 package com.ruoyi.job.util;
 
+import cn.hutool.core.util.StrUtil;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.CronTrigger;
 import org.quartz.Job;
@@ -10,9 +11,12 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.TriggerBuilder;
 import org.quartz.TriggerKey;
+import com.ruoyi.common.core.constant.Constants;
 import com.ruoyi.common.core.constant.ScheduleConstants;
 import com.ruoyi.common.core.exception.job.TaskException;
 import com.ruoyi.common.core.exception.job.TaskException.Code;
+import com.ruoyi.common.core.utils.SpringUtils;
+import com.ruoyi.common.core.utils.StringUtils;
 import com.ruoyi.job.domain.SysJob;
 
 /**
@@ -80,7 +84,12 @@ public class ScheduleUtils
             scheduler.deleteJob(getJobKey(jobId, jobGroup));
         }
 
-        scheduler.scheduleJob(jobDetail, trigger);
+        // 判断任务是否过期
+        if (StringUtils.isNotNull(CronUtils.getNextExecution(job.getCronExpression())))
+        {
+            // 执行调度任务
+            scheduler.scheduleJob(jobDetail, trigger);
+        }
 
         // 暂停任务
         if (job.getStatus().equals(ScheduleConstants.Status.PAUSE.getValue()))
@@ -109,5 +118,25 @@ public class ScheduleUtils
                 throw new TaskException("The task misfire policy '" + job.getMisfirePolicy()
                         + "' cannot be used in cron schedule tasks", Code.CONFIG_ERROR);
         }
+    }
+
+    /**
+     * 检查包名是否为白名单配置
+     * 
+     * @param invokeTarget 目标字符串
+     * @return 结果
+     */
+    public static boolean whiteList(String invokeTarget)
+    {
+        String packageName = StringUtils.substringBefore(invokeTarget, "(");
+        int count = StringUtils.countMatches(packageName, ".");
+        if (count > 1)
+        {
+            return StrUtil.containsAnyIgnoreCase(invokeTarget, Constants.JOB_WHITELIST_STR);
+        }
+        Object obj = SpringUtils.getBean(StringUtils.split(invokeTarget, ".")[0]);
+        String beanPackageName = obj.getClass().getPackage().getName();
+        return StrUtil.containsAnyIgnoreCase(beanPackageName, Constants.JOB_WHITELIST_STR)
+                && !StrUtil.containsAnyIgnoreCase(beanPackageName, Constants.JOB_ERROR_STR);
     }
 }

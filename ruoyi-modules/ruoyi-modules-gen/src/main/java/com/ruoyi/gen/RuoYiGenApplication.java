@@ -1,6 +1,5 @@
 package com.ruoyi.gen;
 
-import com.ruoyi.common.core.processor.SwaggerBeanPostProcessor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import com.ruoyi.common.security.annotation.EnableCustomConfig;
@@ -14,7 +13,7 @@ import com.ruoyi.common.security.annotation.EnableRyFeignClients;
 @EnableCustomConfig
 @EnableRyFeignClients
 @SpringBootApplication
-public class RuoYiGenApplication extends SwaggerBeanPostProcessor {
+public class RuoYiGenApplication {
     public static void main(String[] args) {
         SpringApplication.run(RuoYiGenApplication.class, args);
         System.out.println("(♥◠‿◠)ﾉﾞ  代码生成模块启动成功   ლ(´ڡ`ლ)ﾞ  \n" +

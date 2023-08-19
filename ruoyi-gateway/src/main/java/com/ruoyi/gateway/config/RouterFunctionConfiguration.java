@@ -11,7 +11,7 @@ import com.ruoyi.gateway.handler.ValidateCodeHandler;
 
 /**
  * 路由配置信息
- * 
+ *
  * @author ruoyi
  */
 @Configuration

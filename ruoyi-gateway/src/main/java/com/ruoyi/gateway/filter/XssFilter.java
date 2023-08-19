@@ -42,9 +42,14 @@ public class XssFilter implements GlobalFilter, Ordered
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain)
     {
         ServerHttpRequest request = exchange.getRequest();
+        // xss开关未开启 或 通过nacos关闭，不过滤
+        if (!xss.getEnabled())
+        {
+            return chain.filter(exchange);
+        }
         // GET DELETE 不过滤
         HttpMethod method = request.getMethod();
-        if (method == null || method.matches("GET") || method.matches("DELETE"))
+        if (method == null || method == HttpMethod.GET || method == HttpMethod.DELETE)
         {
             return chain.filter(exchange);
         }
@@ -82,7 +87,7 @@ public class XssFilter implements GlobalFilter, Ordered
                     // 防xss攻击过滤
                     bodyStr = EscapeUtil.clean(bodyStr);
                     // 转成字节
-                    byte[] bytes = bodyStr.getBytes();
+                    byte[] bytes = bodyStr.getBytes(StandardCharsets.UTF_8);
                     NettyDataBufferFactory nettyDataBufferFactory = new NettyDataBufferFactory(ByteBufAllocator.DEFAULT);
                     DataBuffer buffer = nettyDataBufferFactory.allocateBuffer(bytes.length);
                     buffer.write(bytes);
@@ -107,8 +112,8 @@ public class XssFilter implements GlobalFilter, Ordered
 
     /**
      * 是否是Json请求
-     * 
-     * @param request
+     *
+     * @param exchange HTTP请求
      */
     public boolean isJsonRequest(ServerWebExchange exchange)
     {

@@ -95,6 +95,12 @@
             <artifactId>commons-io</artifactId>
         </dependency>
 
+        <!--Hutool-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.8.11</version>
+        </dependency>
         <!-- excel工具 -->
         <dependency>
             <groupId>org.apache.poi</groupId>
