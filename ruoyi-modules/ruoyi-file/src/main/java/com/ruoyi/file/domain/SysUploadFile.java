@@ -17,7 +17,7 @@ public class SysUploadFile implements Serializable {
     /**
      * 文件id
      */
-    @TableId(type = IdType.ASSIGN_ID)
+    @TableId(type = IdType.ID_WORKER)
     private Long id;
     /**
      * 文件名字

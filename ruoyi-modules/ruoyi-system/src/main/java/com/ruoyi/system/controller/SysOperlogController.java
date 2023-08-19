@@ -66,7 +66,7 @@ public class SysOperlogController extends BaseController
     public AjaxResult clean()
     {
         operLogService.cleanOperLog();
-        return success();
+        return AjaxResult.success();
     }
 
     @InnerAuth

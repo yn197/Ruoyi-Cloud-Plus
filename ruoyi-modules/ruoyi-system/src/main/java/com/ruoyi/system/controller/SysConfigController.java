@@ -1,7 +1,6 @@
 package com.ruoyi.system.controller;
 
 import java.util.List;
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.ruoyi.common.core.constant.UserConstants;
 import com.ruoyi.common.core.utils.poi.ExcelUtil;
 import com.ruoyi.common.core.web.controller.BaseController;
 import com.ruoyi.common.core.web.domain.AjaxResult;
@@ -33,8 +33,8 @@ import com.ruoyi.system.service.ISysConfigService;
 @RequestMapping("/config")
 public class SysConfigController extends BaseController
 {
-    @Resource
-    private ISysConfigService iSysConfigService;
+    @Autowired
+    private ISysConfigService configService;
 
     /**
      * 获取参数配置列表
@@ -44,7 +44,7 @@ public class SysConfigController extends BaseController
     public TableDataInfo list(SysConfig config)
     {
         startPage();
-        List<SysConfig> list = iSysConfigService.selectConfigList(config);
+        List<SysConfig> list = configService.selectConfigList(config);
         return getDataTable(list);
     }
 
@@ -53,7 +53,7 @@ public class SysConfigController extends BaseController
     @PostMapping("/export")
     public void export(HttpServletResponse response, SysConfig config)
     {
-        List<SysConfig> list = iSysConfigService.selectConfigList(config);
+        List<SysConfig> list = configService.selectConfigList(config);
         ExcelUtil<SysConfig> util = new ExcelUtil<SysConfig>(SysConfig.class);
         util.exportExcel(response, list, "参数数据");
     }
@@ -64,7 +64,7 @@ public class SysConfigController extends BaseController
     @GetMapping(value = "/{configId}")
     public AjaxResult getInfo(@PathVariable Long configId)
     {
-        return success(iSysConfigService.selectConfigById(configId));
+        return AjaxResult.success(configService.selectConfigById(configId));
     }
 
     /**
@@ -73,7 +73,7 @@ public class SysConfigController extends BaseController
     @GetMapping(value = "/configKey/{configKey}")
     public AjaxResult getConfigKey(@PathVariable String configKey)
     {
-        return success(iSysConfigService.selectConfigByKey(configKey));
+        return AjaxResult.success(configService.selectConfigByKey(configKey));
     }
 
     /**
@@ -84,12 +84,12 @@ public class SysConfigController extends BaseController
     @PostMapping
     public AjaxResult add(@Validated @RequestBody SysConfig config)
     {
-        if (!iSysConfigService.checkConfigKeyUnique(config))
+        if (UserConstants.NOT_UNIQUE.equals(configService.checkConfigKeyUnique(config)))
         {
-            return error("新增参数'" + config.getConfigName() + "'失败，参数键名已存在");
+            return AjaxResult.error("新增参数'" + config.getConfigName() + "'失败，参数键名已存在");
         }
         config.setCreateBy(SecurityUtils.getUsername());
-        return toAjax(iSysConfigService.insertConfig(config));
+        return toAjax(configService.insertConfig(config));
     }
 
     /**
@@ -100,12 +100,12 @@ public class SysConfigController extends BaseController
     @PutMapping
     public AjaxResult edit(@Validated @RequestBody SysConfig config)
     {
-        if (!iSysConfigService.checkConfigKeyUnique(config))
+        if (UserConstants.NOT_UNIQUE.equals(configService.checkConfigKeyUnique(config)))
         {
-            return error("修改参数'" + config.getConfigName() + "'失败，参数键名已存在");
+            return AjaxResult.error("修改参数'" + config.getConfigName() + "'失败，参数键名已存在");
         }
         config.setUpdateBy(SecurityUtils.getUsername());
-        return toAjax(iSysConfigService.updateConfig(config));
+        return toAjax(configService.updateConfig(config));
     }
 
     /**
@@ -116,7 +116,7 @@ public class SysConfigController extends BaseController
     @DeleteMapping("/{configIds}")
     public AjaxResult remove(@PathVariable Long[] configIds)
     {
-        iSysConfigService.deleteConfigByIds(configIds);
+        configService.deleteConfigByIds(configIds);
         return success();
     }
 
@@ -128,7 +128,7 @@ public class SysConfigController extends BaseController
     @DeleteMapping("/refreshCache")
     public AjaxResult refreshCache()
     {
-        iSysConfigService.resetConfigCache();
-        return success();
+        configService.resetConfigCache();
+        return AjaxResult.success();
     }
 }

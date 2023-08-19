@@ -49,15 +49,24 @@ public class SysUserOnlineController extends BaseController
             LoginUser user = redisService.getCacheObject(key);
             if (StringUtils.isNotEmpty(ipaddr) && StringUtils.isNotEmpty(userName))
             {
-                userOnlineList.add(userOnlineService.selectOnlineByInfo(ipaddr, userName, user));
+                if (StringUtils.equals(ipaddr, user.getIpaddr()) && StringUtils.equals(userName, user.getUsername()))
+                {
+                    userOnlineList.add(userOnlineService.selectOnlineByInfo(ipaddr, userName, user));
+                }
             }
             else if (StringUtils.isNotEmpty(ipaddr))
             {
-                userOnlineList.add(userOnlineService.selectOnlineByIpaddr(ipaddr, user));
+                if (StringUtils.equals(ipaddr, user.getIpaddr()))
+                {
+                    userOnlineList.add(userOnlineService.selectOnlineByIpaddr(ipaddr, user));
+                }
             }
             else if (StringUtils.isNotEmpty(userName))
             {
-                userOnlineList.add(userOnlineService.selectOnlineByUserName(userName, user));
+                if (StringUtils.equals(userName, user.getUsername()))
+                {
+                    userOnlineList.add(userOnlineService.selectOnlineByUserName(userName, user));
+                }
             }
             else
             {
@@ -78,6 +87,6 @@ public class SysUserOnlineController extends BaseController
     public AjaxResult forceLogout(@PathVariable String tokenId)
     {
         redisService.deleteObject(CacheConstants.LOGIN_TOKEN_KEY + tokenId);
-        return success();
+        return AjaxResult.success();
     }
 }

@@ -1,10 +1,7 @@
 package com.ruoyi.gen.config;
 
-import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -21,8 +18,6 @@ import java.util.HashSet;
  */
 @Configuration
 @EnableSwagger2
-@EnableKnife4j
-@Import(BeanValidatorPluginsConfiguration.class)//导入其他的配置类 让配置生效
 public class SwaggerConfig {
     @Bean
     public Docket buildDocket() {
@@ -33,7 +28,7 @@ public class SwaggerConfig {
                 //设置返回数据类型
                 .produces(strings)
                 //分组名称
-                .groupName("1.0-SNAPSHOT")
+                .groupName("1.0-RELEASE")
                 .select()
                 //这里指定扫描包路径
                 .apis(RequestHandlerSelectors.basePackage("com.ruoyi.gen.controller"))
@@ -51,6 +46,6 @@ public class SwaggerConfig {
                 .title("ruoyi-gen")
                 .description("若依代码生成服务api文档")
                 .contact(contact)
-                .version("1.0-SNAPSHOT").build();
+                .version("1.0-RELEASE").build();
     }
 }

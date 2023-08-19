@@ -59,17 +59,17 @@ public class GenController extends BaseController
      * 修改代码生成业务
      */
     @RequiresPermissions("tool:gen:query")
-    @GetMapping(value = "/{tableId}")
-    public AjaxResult getInfo(@PathVariable Long tableId)
+    @GetMapping(value = "/{talbleId}")
+    public AjaxResult getInfo(@PathVariable Long talbleId)
     {
-        GenTable table = genTableService.selectGenTableById(tableId);
+        GenTable table = genTableService.selectGenTableById(talbleId);
         List<GenTable> tables = genTableService.selectGenTableAll();
-        List<GenTableColumn> list = genTableColumnService.selectGenTableColumnListByTableId(tableId);
+        List<GenTableColumn> list = genTableColumnService.selectGenTableColumnListByTableId(talbleId);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("info", table);
         map.put("rows", list);
         map.put("tables", tables);
-        return success(map);
+        return AjaxResult.success(map);
     }
 
     /**
@@ -87,7 +87,7 @@ public class GenController extends BaseController
     /**
      * 查询数据表字段列表
      */
-    @GetMapping(value = "/column/{tableId}")
+    @GetMapping(value = "/column/{talbleId}")
     public TableDataInfo columnList(Long tableId)
     {
         TableDataInfo dataInfo = new TableDataInfo();
@@ -109,7 +109,7 @@ public class GenController extends BaseController
         // 查询表信息
         List<GenTable> tableList = genTableService.selectDbTableListByNames(tableNames);
         genTableService.importGenTable(tableList);
-        return success();
+        return AjaxResult.success();
     }
 
     /**
@@ -122,7 +122,7 @@ public class GenController extends BaseController
     {
         genTableService.validateEdit(genTable);
         genTableService.updateGenTable(genTable);
-        return success();
+        return AjaxResult.success();
     }
 
     /**
@@ -134,7 +134,7 @@ public class GenController extends BaseController
     public AjaxResult remove(@PathVariable Long[] tableIds)
     {
         genTableService.deleteGenTableByIds(tableIds);
-        return success();
+        return AjaxResult.success();
     }
 
     /**
@@ -145,7 +145,7 @@ public class GenController extends BaseController
     public AjaxResult preview(@PathVariable("tableId") Long tableId) throws IOException
     {
         Map<String, String> dataMap = genTableService.previewCode(tableId);
-        return success(dataMap);
+        return AjaxResult.success(dataMap);
     }
 
     /**
@@ -169,7 +169,7 @@ public class GenController extends BaseController
     public AjaxResult genCode(@PathVariable("tableName") String tableName)
     {
         genTableService.generatorCode(tableName);
-        return success();
+        return AjaxResult.success();
     }
 
     /**
@@ -181,7 +181,7 @@ public class GenController extends BaseController
     public AjaxResult synchDb(@PathVariable("tableName") String tableName)
     {
         genTableService.synchDb(tableName);
-        return success();
+        return AjaxResult.success();
     }
 
     /**

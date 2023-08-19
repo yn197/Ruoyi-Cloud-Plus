@@ -97,7 +97,8 @@ public class FileUtils
         // 路径为文件且不为空则进行删除
         if (file.isFile() && file.exists())
         {
-            flag = file.delete();
+            file.delete();
+            flag = true;
         }
         return flag;
     }
@@ -126,8 +127,15 @@ public class FileUtils
         {
             return false;
         }
-        // 判断是否在允许下载的文件规则内
-        return ArrayUtils.contains(MimeTypeUtils.DEFAULT_ALLOWED_EXTENSION, FileTypeUtils.getFileType(resource));
+
+        // 检查允许下载的文件规则
+        if (ArrayUtils.contains(MimeTypeUtils.DEFAULT_ALLOWED_EXTENSION, FileTypeUtils.getFileType(resource)))
+        {
+            return true;
+        }
+
+        // 不在允许下载的文件规则
+        return false;
     }
 
     /**

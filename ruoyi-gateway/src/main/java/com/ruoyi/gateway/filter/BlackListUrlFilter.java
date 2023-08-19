@@ -10,7 +10,7 @@ import com.ruoyi.common.core.utils.ServletUtils;
 
 /**
  * 黑名单过滤器
- *
+ * 
  * @author ruoyi
  */
 @Component
@@ -44,7 +44,7 @@ public class BlackListUrlFilter extends AbstractGatewayFilterFactory<BlackListUr
 
         public boolean matchBlacklist(String url)
         {
-            return !blacklistUrlPattern.isEmpty() && blacklistUrlPattern.stream().anyMatch(p -> p.matcher(url).find());
+            return blacklistUrlPattern.isEmpty() ? false : blacklistUrlPattern.stream().filter(p -> p.matcher(url).find()).findAny().isPresent();
         }
 
         public List<String> getBlacklistUrl()

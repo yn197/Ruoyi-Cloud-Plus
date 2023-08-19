@@ -79,7 +79,7 @@ public class SysPostServiceImpl implements ISysPostService
      * @return 结果
      */
     @Override
-    public boolean checkPostNameUnique(SysPost post)
+    public String checkPostNameUnique(SysPost post)
     {
         Long postId = StringUtils.isNull(post.getPostId()) ? -1L : post.getPostId();
         SysPost info = postMapper.checkPostNameUnique(post.getPostName());
@@ -97,7 +97,7 @@ public class SysPostServiceImpl implements ISysPostService
      * @return 结果
      */
     @Override
-    public boolean checkPostCodeUnique(SysPost post)
+    public String checkPostCodeUnique(SysPost post)
     {
         Long postId = StringUtils.isNull(post.getPostId()) ? -1L : post.getPostId();
         SysPost info = postMapper.checkPostCodeUnique(post.getPostCode());
@@ -137,6 +137,7 @@ public class SysPostServiceImpl implements ISysPostService
      * 
      * @param postIds 需要删除的岗位ID
      * @return 结果
+     * @throws Exception 异常
      */
     @Override
     public int deletePostByIds(Long[] postIds)

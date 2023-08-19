@@ -49,19 +49,6 @@ public class SysDeptServiceImpl implements ISysDeptService
     }
 
     /**
-     * 查询部门树结构信息
-     * 
-     * @param dept 部门信息
-     * @return 部门树信息集合
-     */
-    @Override
-    public List<TreeSelect> selectDeptTreeList(SysDept dept)
-    {
-        List<SysDept> depts = SpringUtils.getAopProxy(this).selectDeptList(dept);
-        return buildDeptTreeSelect(depts);
-    }
-
-    /**
      * 构建前端所需要树结构
      * 
      * @param depts 部门列表
@@ -71,9 +58,14 @@ public class SysDeptServiceImpl implements ISysDeptService
     public List<SysDept> buildDeptTree(List<SysDept> depts)
     {
         List<SysDept> returnList = new ArrayList<SysDept>();
-        List<Long> tempList = depts.stream().map(SysDept::getDeptId).collect(Collectors.toList());
+        List<Long> tempList = new ArrayList<Long>();
         for (SysDept dept : depts)
         {
+            tempList.add(dept.getDeptId());
+        }
+        for (Iterator<SysDept> iterator = depts.iterator(); iterator.hasNext();)
+        {
+            SysDept dept = (SysDept) iterator.next();
             // 如果是顶级节点, 遍历该父节点的所有子节点
             if (!tempList.contains(dept.getParentId()))
             {
@@ -148,7 +140,7 @@ public class SysDeptServiceImpl implements ISysDeptService
     public boolean hasChildByDeptId(Long deptId)
     {
         int result = deptMapper.hasChildByDeptId(deptId);
-        return result > 0;
+        return result > 0 ? true : false;
     }
 
     /**
@@ -161,7 +153,7 @@ public class SysDeptServiceImpl implements ISysDeptService
     public boolean checkDeptExistUser(Long deptId)
     {
         int result = deptMapper.checkDeptExistUser(deptId);
-        return result > 0;
+        return result > 0 ? true : false;
     }
 
     /**
@@ -171,7 +163,7 @@ public class SysDeptServiceImpl implements ISysDeptService
      * @return 结果
      */
     @Override
-    public boolean checkDeptNameUnique(SysDept dept)
+    public String checkDeptNameUnique(SysDept dept)
     {
         Long deptId = StringUtils.isNull(dept.getDeptId()) ? -1L : dept.getDeptId();
         SysDept info = deptMapper.checkDeptNameUnique(dept.getDeptName(), dept.getParentId());

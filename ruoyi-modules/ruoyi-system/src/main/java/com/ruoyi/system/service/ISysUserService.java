@@ -69,10 +69,10 @@ public interface ISysUserService
     /**
      * 校验用户名称是否唯一
      * 
-     * @param user 用户信息
+     * @param userName 用户名称
      * @return 结果
      */
-    public boolean checkUserNameUnique(SysUser user);
+    public String checkUserNameUnique(String userName);
 
     /**
      * 校验手机号码是否唯一
@@ -80,7 +80,7 @@ public interface ISysUserService
      * @param user 用户信息
      * @return 结果
      */
-    public boolean checkPhoneUnique(SysUser user);
+    public String checkPhoneUnique(SysUser user);
 
     /**
      * 校验email是否唯一
@@ -88,7 +88,7 @@ public interface ISysUserService
      * @param user 用户信息
      * @return 结果
      */
-    public boolean checkEmailUnique(SysUser user);
+    public String checkEmailUnique(SysUser user);
 
     /**
      * 校验用户是否允许操作

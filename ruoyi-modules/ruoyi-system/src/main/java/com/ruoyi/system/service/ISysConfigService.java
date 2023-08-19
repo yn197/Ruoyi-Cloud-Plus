@@ -54,6 +54,7 @@ public interface ISysConfigService
      * 批量删除参数信息
      * 
      * @param configIds 需要删除的参数ID
+     * @return 结果
      */
     public void deleteConfigByIds(Long[] configIds);
 
@@ -78,5 +79,5 @@ public interface ISysConfigService
      * @param config 参数信息
      * @return 结果
      */
-    public boolean checkConfigKeyUnique(SysConfig config);
+    public String checkConfigKeyUnique(SysConfig config);
 }

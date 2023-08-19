@@ -3,36 +3,29 @@ package com.ruoyi.common.security.service;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 import com.ruoyi.common.core.constant.CacheConstants;
 import com.ruoyi.common.core.constant.SecurityConstants;
+import com.ruoyi.common.core.utils.uuid.IdUtils;
 import com.ruoyi.common.core.utils.JwtUtils;
 import com.ruoyi.common.core.utils.ServletUtils;
 import com.ruoyi.common.core.utils.StringUtils;
 import com.ruoyi.common.core.utils.ip.IpUtils;
-import com.ruoyi.common.core.utils.uuid.IdUtils;
 import com.ruoyi.common.redis.service.RedisService;
 import com.ruoyi.common.security.utils.SecurityUtils;
 import com.ruoyi.system.api.model.LoginUser;
-import org.springframework.stereotype.Service;
 
 /**
  * token验证处理
- *
+ * 
  * @author ruoyi
  */
-@Service
-public class TokenService {
-    private static final Logger log = LoggerFactory.getLogger(TokenService.class);
-
-    @Resource
+@Component
+public class TokenService
+{
+    @Autowired
     private RedisService redisService;
 
     protected static final long MILLIS_SECOND = 1000;
@@ -48,14 +41,15 @@ public class TokenService {
     /**
      * 创建令牌
      */
-    public Map<String, Object> createToken(LoginUser loginUser) {
+    public Map<String, Object> createToken(LoginUser loginUser)
+    {
         String token = IdUtils.fastUUID();
         Long userId = loginUser.getSysUser().getUserId();
         String userName = loginUser.getSysUser().getUserName();
         loginUser.setToken(token);
         loginUser.setUserid(userId);
         loginUser.setUsername(userName);
-        loginUser.setIpaddr(IpUtils.getIpAddr());
+        loginUser.setIpaddr(IpUtils.getIpAddr(ServletUtils.getRequest()));
         refreshToken(loginUser);
 
         // Jwt存储信息
@@ -76,7 +70,8 @@ public class TokenService {
      *
      * @return 用户信息
      */
-    public LoginUser getLoginUser() {
+    public LoginUser getLoginUser()
+    {
         return getLoginUser(ServletUtils.getRequest());
     }
 
@@ -85,7 +80,8 @@ public class TokenService {
      *
      * @return 用户信息
      */
-    public LoginUser getLoginUser(HttpServletRequest request) {
+    public LoginUser getLoginUser(HttpServletRequest request)
+    {
         // 获取请求携带的令牌
         String token = SecurityUtils.getToken(request);
         return getLoginUser(token);
@@ -96,16 +92,20 @@ public class TokenService {
      *
      * @return 用户信息
      */
-    public LoginUser getLoginUser(String token) {
+    public LoginUser getLoginUser(String token)
+    {
         LoginUser user = null;
-        try {
-            if (StringUtils.isNotEmpty(token)) {
+        try
+        {
+            if (StringUtils.isNotEmpty(token))
+            {
                 String userkey = JwtUtils.getUserKey(token);
                 user = redisService.getCacheObject(getTokenKey(userkey));
                 return user;
             }
-        } catch (Exception e) {
-            log.error("获取用户信息异常'{}'", e.getMessage());
+        }
+        catch (Exception e)
+        {
         }
         return user;
     }
@@ -113,8 +113,10 @@ public class TokenService {
     /**
      * 设置用户身份信息
      */
-    public void setLoginUser(LoginUser loginUser) {
-        if (StringUtils.isNotNull(loginUser) && StringUtils.isNotEmpty(loginUser.getToken())) {
+    public void setLoginUser(LoginUser loginUser)
+    {
+        if (StringUtils.isNotNull(loginUser) && StringUtils.isNotEmpty(loginUser.getToken()))
+        {
             refreshToken(loginUser);
         }
     }
@@ -122,8 +124,10 @@ public class TokenService {
     /**
      * 删除用户缓存信息
      */
-    public void delLoginUser(String token) {
-        if (StringUtils.isNotEmpty(token)) {
+    public void delLoginUser(String token)
+    {
+        if (StringUtils.isNotEmpty(token))
+        {
             String userkey = JwtUtils.getUserKey(token);
             redisService.deleteObject(getTokenKey(userkey));
         }
@@ -134,10 +138,12 @@ public class TokenService {
      *
      * @param loginUser
      */
-    public void verifyToken(LoginUser loginUser) {
+    public void verifyToken(LoginUser loginUser)
+    {
         long expireTime = loginUser.getExpireTime();
         long currentTime = System.currentTimeMillis();
-        if (expireTime - currentTime <= MILLIS_MINUTE_TEN) {
+        if (expireTime - currentTime <= MILLIS_MINUTE_TEN)
+        {
             refreshToken(loginUser);
         }
     }
@@ -147,7 +153,8 @@ public class TokenService {
      *
      * @param loginUser 登录信息
      */
-    public void refreshToken(LoginUser loginUser) {
+    public void refreshToken(LoginUser loginUser)
+    {
         loginUser.setLoginTime(System.currentTimeMillis());
         loginUser.setExpireTime(loginUser.getLoginTime() + expireTime * MILLIS_MINUTE);
         // 根据uuid将loginUser缓存
@@ -155,7 +162,8 @@ public class TokenService {
         redisService.setCacheObject(userKey, loginUser, expireTime, TimeUnit.MINUTES);
     }
 
-    private String getTokenKey(String token) {
+    private String getTokenKey(String token)
+    {
         return ACCESS_TOKEN + token;
     }
 }
